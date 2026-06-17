@@ -1,6 +1,6 @@
 import requests
 
-url_py = "http://127.0.0.1:8000/api/analyze/technical"
+url_py = "https://stockmindai-backend.onrender.com/api/analyze/technical"
 payload = {"symbol": "CRM"}
 
 try:

@@ -2,7 +2,7 @@ import requests
 import warnings
 warnings.filterwarnings("ignore")
 
-base_url = "http://localhost:5113/api"
+base_url = "https://stockmindai-backend.onrender.com/api"
 
 # Login
 login_url = f"{base_url}/auth/login"

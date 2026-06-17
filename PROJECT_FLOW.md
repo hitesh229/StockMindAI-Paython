@@ -150,7 +150,7 @@ flowchart LR
 
 ## 8. Runtime and Deployment Notes
 
-- Backend expects `AIEngineSettings:BaseUrl` in configuration, defaulting to `http://127.0.0.1:8000`.
+- Backend expects `AIEngineSettings:BaseUrl` in configuration, defaulting to `https://stockmindai-backend.onrender.com`.
 - Python AI engine uses `uvicorn main:app --host 127.0.0.1 --port 8000`.
 - Frontend is expected to run with `npm run dev` from `frontend-react/`.
 - Backend runs with `dotnet run` in `backend-dotnet/` after restore.

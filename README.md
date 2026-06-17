@@ -74,7 +74,7 @@ cd ai-engine-python
 pip install -r requirements.txt
 uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
-Exposes FastAPI REST endpoints on `http://127.0.0.1:8000`.
+Exposes FastAPI REST endpoints on `https://stockmindai-backend.onrender.com`.
 
 ### 3. Run Backend API Gateway
 ```bash
@@ -82,7 +82,7 @@ cd backend-dotnet
 dotnet restore
 dotnet run
 ```
-Exposes Web API REST endpoints on `http://localhost:5000` (HTTP) or `https://localhost:5001` (HTTPS).
+Exposes Web API REST endpoints on `https://stockmindai-backend.onrender.com`.
 
 ### 4. Run React Frontend Terminal
 ```bash
@@ -90,7 +90,7 @@ cd frontend-react
 npm install
 npm run dev
 ```
-Serves the React dashboard SPA on `http://localhost:5173`.
+Serves the React dashboard SPA on `https://stock-mind-ai-front-end.vercel.app`.
 
 ---
 

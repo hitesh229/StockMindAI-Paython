@@ -1,7 +1,7 @@
 import requests
 
 # Test Python API
-url_py = "http://127.0.0.1:8000/api/analyze/technical"
+url_py = "https://stockmindai-backend.onrender.com/api/analyze/technical"
 payload = {"symbol": "AAPL"}
 try:
     print("Testing Python /api/analyze/technical for AAPL...")
