@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: stockmindai-python-ai-engine
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    plan: free
+    pythonVersion: 3.11
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: PORT
+        value: 8000
+      - key: DEBUG
+        value: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: FRONTEND_BASE_URL
+        value: https://stock-mind-ai-front-end.vercel.app/
+      - key: DOTNET_BACKEND_BASE_URL
+        value: https://stockmindai-backend.onrender.com/
+      - key: DOTNET_SWAGGER_URL
+        value: https://stockmindai-backend.onrender.com/Swagger/index.html
