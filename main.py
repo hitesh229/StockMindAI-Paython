@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import List, Dict, Optional
 import yfinance as yf
 import pandas as pd
+import os
 
 # Import our custom AI services
 from services.technical_analysis import calculate_technical_indicators, generate_technical_signals
@@ -18,12 +19,22 @@ from services.market_summary import MarketSummaryService
 app = FastAPI(title="StockMindAI Python AI Engine", version="1.0.0")
 
 # Enable CORS for communication from .NET and Frontend
+# Allow both development and production URLs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://stock-mind-ai-front-end.vercel.app",  # Production frontend
+        "http://localhost:3000",                         # Local development
+        "http://localhost:5173",                         # Vite development
+        "http://localhost:8000",                         # Local backend
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_origin_regex="https://.*\.vercel\.app",  # Allow all Vercel deployments
 )
 
 # Instantiate models and services
@@ -68,9 +79,89 @@ class ChatRequest(BaseModel):
     risk_profile: Optional[str] = "Medium"
     portfolio: Optional[List[HoldingItem]] = None
 
+# Authentication Models
+class RegisterRequest(BaseModel):
+    email: str
+    password: str
+    full_name: Optional[str] = None
+    risk_profile: Optional[str] = "Medium"
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class AuthResponse(BaseModel):
+    success: bool
+    message: str
+    token: Optional[str] = None
+    user_id: Optional[str] = None
+
 @app.get("/")
 def read_root():
     return {"status": "running", "service": "StockMindAI AI Engine"}
+
+# ==================== AUTH ENDPOINTS ====================
+
+@app.post("/auth/register")
+def register(request: RegisterRequest):
+    """
+    Register a new user.
+    
+    This is a basic implementation. In production, you should:
+    - Hash passwords using bcrypt
+    - Store in database
+    - Return JWT token
+    """
+    try:
+        if not request.email or not request.password:
+            raise HTTPException(status_code=400, detail="Email and password are required")
+        
+        if len(request.password) < 6:
+            raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
+        
+        # TODO: Store user in database
+        # For now, return success response
+        user_id = f"user_{hash(request.email) % 1000000}"
+        
+        return AuthResponse(
+            success=True,
+            message="Registration successful",
+            token="dummy_jwt_token",  # TODO: Generate real JWT
+            user_id=user_id
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/auth/login")
+def login(request: LoginRequest):
+    """
+    Login user and return authentication token.
+    
+    This is a basic implementation. In production, you should:
+    - Verify password against hashed password in database
+    - Generate JWT token
+    - Return token with expiration
+    """
+    try:
+        if not request.email or not request.password:
+            raise HTTPException(status_code=400, detail="Email and password are required")
+        
+        # TODO: Verify against database
+        # For now, return success response
+        user_id = f"user_{hash(request.email) % 1000000}"
+        
+        return AuthResponse(
+            success=True,
+            message="Login successful",
+            token="dummy_jwt_token",  # TODO: Generate real JWT
+            user_id=user_id
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/stock/search")
 def search_stock(q: str):
