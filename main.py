@@ -34,7 +34,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_origin_regex="https://.*\.vercel\.app",  # Allow all Vercel deployments
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel deployments
 )
 
 # Instantiate models and services
